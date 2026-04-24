@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-USE_OLLAMA = True  # True = Ollama (local), False = Gemini (API)
+USE_OLLAMA = False  # True = Ollama (local), False = Gemini (API)
 
 
 def get_response(prompt: str) -> str:
