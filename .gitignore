@@ -1,0 +1,47 @@
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# API Keys - NEVER commit this!
+.env
+.env.local
+.env.production
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+
+# Streamlit
+.streamlit/secrets.toml
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.suo
+*.user
+
+# Logs
+*.log
+logs/
+
+# Build/dist
+dist/
+build/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Ollama models (too large for GitHub)
+*.bin
+*.gguf
+*.ggml
