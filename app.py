@@ -1,17 +1,16 @@
 # app.py
 
 import streamlit as st
-from pipeline import run_brand_audit
 
 # ── Page configuration ────────────────────────────────────────
 st.set_page_config(
-    page_title="Brand Audit AI",
-    page_icon="🔍",
+    page_title="Explainer Article Writer AI",
+    page_icon="📝",
     layout="wide"
 )
 
 # ── Header ────────────────────────────────────────────────────
-st.title("🔍 Brand Audit Report Generator")
+st.title("📝 Explainer Article Writer")
 st.markdown("*Powered by a Multi-Agent AI System with LLM-as-Judge*")
 st.divider()
 
@@ -19,81 +18,79 @@ st.divider()
 with st.sidebar:
     st.header("ℹ️ How it works")
     st.markdown("""
-    1. **Enter** a brand name
-    2. **Tavily** searches live data
-    3. **3 AI Agents** analyze it:
-       - 🔎 Perception Researcher
-       - 📊 Sentiment Analyst  
-       - ✍️ Report Writer
-    4. **LLM Judge** scores the report
+    1. **Enter** a complex topic
+    2. **Tavily** searches authoritative sources
+    3. **3 AI Agents** process it:
+       - 🔬 Concept Researcher
+       - 🎯 Analogy Finder
+       - ✍️ Article Writer
+    4. **LLM Judge** scores the article on accuracy, simplicity & analogies
     """)
     st.divider()
-    st.caption("Built with Python, Gemini, Tavily & Streamlit")
+    st.caption("Built with Python, Gemini/Ollama, Tavily & Streamlit")
 
 # ── Main input ────────────────────────────────────────────────
 col1, col2 = st.columns([3, 1])
 
 with col1:
-    brand_name = st.text_input(
-        "Enter a brand name",
-        placeholder="e.g. Nike, Apple, Tesla, Zara...",
+    topic_name = st.text_input(
+        "Enter a complex topic",
+        placeholder="e.g. Blockchain, CRISPR, Derivative Contracts, Quantum Computing...",
         label_visibility="collapsed"
     )
 
 with col2:
-    run_button = st.button("🚀 Generate Report", use_container_width=True, type="primary")
+    run_button = st.button("🚀 Generate Article", use_container_width=True, type="primary")
 
 # ── Run the pipeline ──────────────────────────────────────────
 if run_button:
-    if not brand_name.strip():
-        st.warning("Please enter a brand name first.")
+    if not topic_name.strip():
+        st.warning("Please enter a topic first.")
     else:
-        # Progress tracking
-        progress_bar = st.progress(0, text="Starting brand audit...")
+        progress_bar = st.progress(0, text="Starting article generation...")
 
         try:
+            import time
+
             with st.spinner(""):
-                # Show live progress steps
-                progress_bar.progress(10, text="🔎 Searching the web with Tavily...")
-                import time
-
-                # Import and run each agent with progress updates
+                progress_bar.progress(10, text="🔬 Researching core concepts with Tavily...")
                 from agents.researcher import run_researcher
-                researcher_output = run_researcher(brand_name)
-                progress_bar.progress(35, text="📋 Analyzing brand perception...")
+                researcher_output = run_researcher(topic_name)
 
-                from agents.sentiment import run_sentiment_analyst
-                sentiment_output = run_sentiment_analyst(researcher_output)
-                progress_bar.progress(60, text="📊 Running sentiment analysis...")
+                progress_bar.progress(40, text="🎯 Finding analogies and real-world examples...")
+                from agents.analogy import run_analogy_finder
+                analogy_output = run_analogy_finder(researcher_output)
 
-                from agents.writer import run_report_writer
-                writer_output = run_report_writer(sentiment_output)
-                progress_bar.progress(85, text="✍️ Writing audit report...")
+                progress_bar.progress(65, text="✍️ Drafting beginner-friendly article...")
+                from agents.writer import run_article_writer
+                writer_output = run_article_writer(analogy_output)
 
+                progress_bar.progress(85, text="⚖️ Judge evaluating accuracy & clarity...")
                 from agents.judge import run_judge
                 result = run_judge(writer_output)
+
                 progress_bar.progress(100, text="✅ Complete!")
 
             time.sleep(0.5)
             progress_bar.empty()
 
-            st.success(f"✅ Brand Audit for **{brand_name}** is ready!")
+            st.success(f"✅ Explainer Article for **{topic_name}** is ready!")
             st.divider()
 
-            # ── Output in tabs ────────────────────────────────────────
+            # ── Output in tabs ────────────────────────────────
             tab1, tab2, tab3, tab4 = st.tabs([
-                "📄 Audit Report",
-                "📊 Sentiment Analysis",
-                "🔎 Research Notes",
+                "📄 Explainer Article",
+                "🎯 Analogies & Examples",
+                "🔬 Research Notes",
                 "⚖️ Judge Evaluation"
             ])
 
             with tab1:
                 st.markdown(result["audit_report"])
                 st.download_button(
-                    "📥 Download Report",
+                    "📥 Download Article",
                     data=result["audit_report"],
-                    file_name=f"{brand_name}_audit_report.md",
+                    file_name=f"{topic_name.replace(' ', '_')}_explainer.md",
                     mime="text/markdown"
                 )
 

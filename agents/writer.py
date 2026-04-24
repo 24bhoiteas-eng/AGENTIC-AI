@@ -3,21 +3,21 @@
 from utils.prompts import writer_prompt
 from utils.llm import get_response
 
-def run_report_writer(sentiment_output: dict) -> dict:
-    brand = sentiment_output["brand"]
-    research_notes = sentiment_output["research_notes"]
-    sentiment_analysis = sentiment_output["sentiment_analysis"]
+def run_article_writer(analogy_output: dict) -> dict:
+    topic = analogy_output["topic"]
+    research_notes = analogy_output["research_notes"]
+    analogy_analysis = analogy_output["analogy_analysis"]
 
-    print(f"[Writer] Writing report for: {brand}")
+    print(f"[Writer] Writing explainer article for: {topic}")
 
-    prompt = writer_prompt(brand, research_notes, sentiment_analysis)
-    audit_report = get_response(prompt)
+    prompt = writer_prompt(topic, research_notes, analogy_analysis)
+    article = get_response(prompt)
 
-    print(f"[Writer] ✓ Report written")
+    print(f"[Writer] ✓ Article written")
 
     return {
-        "brand": brand,
+        "topic": topic,
         "research_notes": research_notes,
-        "sentiment_analysis": sentiment_analysis,
-        "audit_report": audit_report
+        "analogy_analysis": analogy_analysis,
+        "audit_report": article        # kept as audit_report so judge.py & app.py work unchanged
     }

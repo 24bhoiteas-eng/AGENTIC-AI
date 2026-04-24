@@ -1,32 +1,32 @@
 # utils/search.py
 
-from tavily import TavilyClient   # Line 1
-import os                          # Line 2
-from dotenv import load_dotenv     # Line 3
+from tavily import TavilyClient
+import os
+from dotenv import load_dotenv
 
-load_dotenv()                      # Line 4
+load_dotenv()
 
-client = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))  # Line 5
+client = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
 
-def search_brand(query: str, max_results: int = 5) -> str:  # Line 6
+def search_topic(query: str, max_results: int = 5) -> str:
     """
-    Search for information about a brand using Tavily.
+    Search for information about a topic using Tavily.
     Returns a single string of combined search results.
     """
     try:
-        response = client.search(                           # Line 7
+        response = client.search(
             query=query,
             search_depth="advanced",
             max_results=max_results
         )
-        results = []                                        # Line 8
-        for item in response.get("results", []):            # Line 9
+        results = []
+        for item in response.get("results", []):
             title = item.get("title", "")
             content = item.get("content", "")
             url = item.get("url", "")
             results.append(f"Source: {url}\nTitle: {title}\nContent: {content}\n")
 
-        return "\n---\n".join(results)                      # Line 10
+        return "\n---\n".join(results)
 
     except Exception as e:
-        return f"Search error: {str(e)}"                   # Line 11
+        return f"Search error: {str(e)}"

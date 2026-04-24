@@ -1,27 +1,27 @@
 # agents/researcher.py
 
-from utils.search import search_brand
+from utils.search import search_topic
 from utils.prompts import researcher_prompt
-from utils.llm import get_response          # ← replaces genai import
+from utils.llm import get_response
 
-def run_researcher(brand: str) -> dict:
-    print(f"[Researcher] Searching for brand: {brand}")
+def run_researcher(topic: str) -> dict:
+    print(f"[Researcher] Searching for topic: {topic}")
 
-    reviews_data = search_brand(f"{brand} customer reviews 2024")
-    news_data = search_brand(f"{brand} brand news reputation 2024")
-    social_data = search_brand(f"{brand} social media public opinion")
+    concept_data = search_topic(f"{topic} explained simply beginner guide")
+    mechanism_data = search_topic(f"{topic} how it works in depth")
+    terminology_data = search_topic(f"{topic} key concepts terminology")
 
-    raw_data = f"""=== CUSTOMER REVIEWS ===\n{reviews_data}
-=== NEWS & MEDIA ===\n{news_data}
-=== SOCIAL MENTIONS ===\n{social_data}"""
+    raw_data = f"""=== BEGINNER EXPLANATIONS ===\n{concept_data}
+=== HOW IT WORKS ===\n{mechanism_data}
+=== KEY CONCEPTS & TERMS ===\n{terminology_data}"""
 
-    prompt = researcher_prompt(brand, raw_data)
-    research_notes = get_response(prompt)           # ← replaces model.generate_content
+    prompt = researcher_prompt(topic, raw_data)
+    research_notes = get_response(prompt)
 
     print(f"[Researcher] ✓ Research complete")
 
     return {
-        "brand": brand,
+        "topic": topic,
         "raw_data": raw_data,
         "research_notes": research_notes
     }

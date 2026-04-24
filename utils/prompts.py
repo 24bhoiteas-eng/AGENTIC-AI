@@ -1,90 +1,94 @@
 # utils/prompts.py
 
-def researcher_prompt(brand: str, raw_data: str) -> str:
-    return f"""You are a Brand Perception Researcher.
-Your job is to analyze raw search data about the brand "{brand}" and extract key findings.
+def researcher_prompt(topic: str, raw_data: str) -> str:
+    return f"""You are an Expert Concept Researcher specializing in making complex topics understandable.
+Your job is to analyze raw search data about "{topic}" and extract its core concepts.
 
 RAW SEARCH DATA:
 {raw_data}
 
 Extract and organize the following:
-1. BRAND OVERVIEW: What the brand is known for
-2. PUBLIC PERCEPTION: How customers view the brand (with examples)
-3. RECENT NEWS: Any recent notable events or controversies
-4. SOCIAL SENTIMENT: What people are saying on social platforms
-5. KEY THEMES: Top 3-5 recurring themes in the data
+1. TOPIC OVERVIEW: What is {topic} in one simple sentence?
+2. CORE CONCEPTS: The 4-6 fundamental ideas someone must understand
+3. HOW IT WORKS: Step-by-step explanation of the underlying mechanism
+4. KEY TERMINOLOGY: Important terms with simple definitions
+5. COMMON MISCONCEPTIONS: What people often get wrong about this topic
 
 Be factual. Use evidence from the data. Do not hallucinate.
 Format your response with clear section headers."""
 
 
-def sentiment_prompt(brand: str, research_notes: str) -> str:
-    return f"""You are a Brand Sentiment Analyst.
-Analyze the following research notes about "{brand}" and provide a detailed sentiment analysis.
+def analogy_prompt(topic: str, research_notes: str) -> str:
+    return f"""You are an Expert Analogy Finder who specializes in explaining complex ideas through comparisons.
+Analyze the following research notes about "{topic}" and find the best analogies and real-world examples.
 
 RESEARCH NOTES:
 {research_notes}
 
 Provide:
-1. OVERALL SENTIMENT SCORE: Positive / Neutral / Negative (with % estimate)
-2. POSITIVE THEMES: What people love (list with examples)
-3. NEGATIVE THEMES: What people criticize (list with examples)
-4. EMOTIONAL TONE: How customers emotionally feel about the brand
-5. TRUST LEVEL: High / Medium / Low with reasoning
+1. BEST ANALOGY: One powerful everyday analogy that explains the whole concept
+2. CONCEPT-BY-CONCEPT ANALOGIES: A simple analogy for each core concept
+3. REAL-WORLD EXAMPLES: 3-5 concrete real-world applications or instances
+4. RELATABLE COMPARISONS: Compare it to something a beginner already knows
+5. WHAT IT IS NOT: Clarify by contrast — what {topic} is often confused with
 
-Be analytical and specific. Use data from the notes."""
+Be creative but accurate. Every analogy must map correctly to the concept."""
 
 
-def writer_prompt(brand: str, research: str, sentiment: str) -> str:
-    return f"""You are a Senior Brand Strategist writing a formal Brand Audit Report.
+def writer_prompt(topic: str, research: str, analogies: str) -> str:
+    return f"""You are a Science & Tech Journalist writing a beginner-friendly explainer article.
 
-BRAND: {brand}
+TOPIC: {topic}
 RESEARCH FINDINGS: {research}
-SENTIMENT ANALYSIS: {sentiment}
+ANALOGIES & EXAMPLES: {analogies}
 
-Write a complete Brand Audit Report with these sections:
+Write a complete explainer article with these sections:
 
-# Brand Audit Report: {brand}
+# {topic} Explained: A Beginner's Guide
 
-## 1. Executive Summary
-(2-3 sentence overview)
+## 1. Introduction
+(Hook the reader with a relatable question or scenario. 2-3 sentences.)
 
-## 2. Brand Reputation Analysis
-(Detailed analysis of how the brand is perceived)
+## 2. What Is {topic}?
+(Plain-English definition using the best analogy from the research.)
 
-## 3. Messaging Consistency
-(Is the brand's message consistent across channels?)
+## 3. How Does It Work?
+(Step-by-step breakdown using simple language and analogies.)
 
-## 4. Positioning Gaps
-(Where does the brand fall short vs. its positioning?)
+## 4. Real-World Examples
+(3 concrete examples of {topic} in action that a beginner can relate to.)
 
-## 5. Competitive Context
-(Brief note on competitive standing based on data)
+## 5. Why Does It Matter?
+(Explain the significance and impact in everyday life.)
 
-## 6. Key Recommendations
-(3-5 actionable recommendations)
+## 6. Common Misconceptions
+(Bust 2-3 myths people believe about {topic}.)
 
-Use professional language. Be specific. Cite themes from the research."""
+## 7. Summary
+(3-sentence recap of the key takeaways.)
+
+Write for a curious 16-year-old with no background in the subject.
+Use short paragraphs, simple words, and include all analogies naturally."""
 
 
-def judge_prompt(brand: str, report: str) -> str:
-    return f"""You are an expert Brand Consultant evaluating an AI-generated Brand Audit Report.
+def judge_prompt(topic: str, article: str) -> str:
+    return f"""You are an expert Science Educator evaluating an AI-generated explainer article.
 
-BRAND: {brand}
-REPORT TO EVALUATE:
-{report}
+TOPIC: {topic}
+ARTICLE TO EVALUATE:
+{article}
 
-Score this report on the following criteria (each out of 10):
+Score this article on the following criteria (each out of 10):
 
-1. ACCURACY (10): Are claims backed by evidence?
-2. DEPTH (10): Is the analysis thorough?
-3. CLARITY (10): Is it well-written and easy to understand?
-4. ACTIONABILITY (10): Are recommendations practical?
-5. STRUCTURE (10): Is the report well-organized?
+1. ACCURACY (10): Are the facts and explanations technically correct?
+2. SIMPLICITY (10): Is it written in plain language a beginner can understand?
+3. ANALOGY QUALITY (10): Are the analogies apt, creative, and correctly mapped?
+4. REAL-WORLD RELEVANCE (10): Are the examples relatable and concrete?
+5. STRUCTURE & FLOW (10): Is the article well-organized and easy to follow?
 
 Provide:
 - Individual scores for each criterion
 - TOTAL SCORE: X/50
-- STRENGTHS: What the report does well
-- IMPROVEMENTS: What could be better
+- STRENGTHS: What the article does well
+- IMPROVEMENTS: What could be clearer or more accurate
 - FINAL VERDICT: Excellent / Good / Acceptable / Needs Revision"""
