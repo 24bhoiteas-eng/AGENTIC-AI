@@ -16,6 +16,7 @@ The system takes a brand name as input and orchestrates a pipeline of four disti
 * **Search Engine:** [Tavily AI](https://tavily.com/) (LLM-optimized search)
 * **LLM (Local):** [Ollama](https://ollama.com/) (Running `gemma3:1b`)
 * **LLM (Cloud):** [Google Gemini 2.0 Flash](https://aistudio.google.com/) (Fallback/Production)
+<img width="894" height="624" alt="image" src="https://github.com/user-attachments/assets/b45435e7-67ef-4706-9b74-0b6279387083" />
 
 ---
 
