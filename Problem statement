@@ -1,0 +1,7 @@
+PS: 10
+Explainer Article Writer
+Given a complex topic (e.g. blockchain, CRISPR, derivative contracts), agents research authoritative explanations and analogies via Tavily, extract the core concepts, and draft a beginner-friendly explainer article with real-world examples. The judge evaluates accuracy, simplicity, and use of analogy.
+Concept Researcher
+Analogy Finder
+Article Writer
+Tavily
