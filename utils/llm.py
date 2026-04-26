@@ -2,10 +2,10 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-USE_OLLAMA = False  # True = Ollama (local), False = Gemini (API)
+USE_OLLAMA = False
+USE_GROQ = True  # ← switched to Groq
 
 def get_api_key(key_name):
-    """Reads from Streamlit secrets (cloud) or .env (local)."""
     try:
         import streamlit as st
         return st.secrets[key_name]
@@ -15,8 +15,25 @@ def get_api_key(key_name):
 def get_response(prompt: str) -> str:
     if USE_OLLAMA:
         return _ollama_response(prompt)
+    elif USE_GROQ:
+        return _groq_response(prompt)
     else:
         return _gemini_response(prompt)
+
+def _groq_response(prompt: str) -> str:
+    from groq import Groq
+
+    api_key = get_api_key("GROQ_API_KEY")
+    if not api_key:
+        raise Exception("GROQ_API_KEY not found!")
+
+    client = Groq(api_key=api_key)
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",  # fast & free
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=1000
+    )
+    return response.choices[0].message.content
 
 def _ollama_response(prompt: str) -> str:
     import ollama
@@ -32,20 +49,14 @@ def _gemini_response(prompt: str) -> str:
 
     api_key = get_api_key("GEMINI_API_KEY")
     if not api_key:
-        raise Exception("GEMINI_API_KEY not found in secrets or .env file!")
+        raise Exception("GEMINI_API_KEY not found!")
 
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel("gemini-2.0-flash-lite")
 
     for attempt in range(3):
         try:
-            response = model.generate_content(
-    prompt,
-    generation_config=genai.types.GenerationConfig(
-        max_output_tokens=500,  # shorter = faster
-        temperature=0.7
-    )
-)
+            response = model.generate_content(prompt)
             return response.text
         except Exception as e:
             if "429" in str(e):
