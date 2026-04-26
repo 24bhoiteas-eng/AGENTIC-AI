@@ -56,14 +56,17 @@ if run_button:
                 progress_bar.progress(10, text="🔬 Researching core concepts with Tavily...")
                 from agents.researcher import run_researcher
                 researcher_output = run_researcher(topic_name)
+                time.sleep(10)  # ← wait to avoid rate limit
 
                 progress_bar.progress(40, text="🎯 Finding analogies and real-world examples...")
                 from agents.analogy import run_analogy_finder
                 analogy_output = run_analogy_finder(researcher_output)
+                time.sleep(10)  # ← wait to avoid rate limit
 
                 progress_bar.progress(65, text="✍️ Drafting beginner-friendly article...")
                 from agents.writer import run_article_writer
                 writer_output = run_article_writer(analogy_output)
+                time.sleep(10)  # ← wait to avoid rate limit
 
                 progress_bar.progress(85, text="⚖️ Judge evaluating accuracy & clarity...")
                 from agents.judge import run_judge
