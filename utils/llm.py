@@ -35,11 +35,17 @@ def _gemini_response(prompt: str) -> str:
         raise Exception("GEMINI_API_KEY not found in secrets or .env file!")
 
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-2.0-flash")
+    model = genai.GenerativeModel("gemini-2.0-flash-lite")
 
     for attempt in range(3):
         try:
-            response = model.generate_content(prompt)
+            response = model.generate_content(
+    prompt,
+    generation_config=genai.types.GenerationConfig(
+        max_output_tokens=500,  # shorter = faster
+        temperature=0.7
+    )
+)
             return response.text
         except Exception as e:
             if "429" in str(e):
